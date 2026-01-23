@@ -7,14 +7,25 @@ function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    email === "admin@gmail.com" && password === "123456" ? onLogin()
-    : setError("Invalid email or password");
-    };
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+    
 
-    return (
+    if(!storedUserData){
+      setError("No user found. Please register first.");
+      return;
+    }
+    if(email === storedUserData.email && password === storedUserData.password){
+      onLogin();
+    }else{
+      setError("Invalid email or password");
+    }
+  };
+
+     
+     return(
         <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px", }}>
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>   
+        <form onSubmit={handleSubmit}>
             <input
             type="email"
             placeholder="Email"
@@ -34,6 +45,6 @@ function Login({ onLogin }) {
           </form>
             {error && <p style={{ color: "red" }}>{error}</p>}
             </div>
-    );
+      );
 }
 export default Login;
