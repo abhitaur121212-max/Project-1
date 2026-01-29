@@ -1,5 +1,5 @@
-function dashbo(){
-    return <h1>dashbaord</h1>;
+function Contact(){
+    return <h1>Contact</h1>;
 
 }
-export default dashbaord;
+export default Contact;

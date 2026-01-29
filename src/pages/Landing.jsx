@@ -2,9 +2,12 @@ import React from "react";
 import { useState } from "react";
 function landing({onNavigate}){
     return(
-        <div style={{padding:"20px",}}>
+        <div style={{
+            padding:"50px",height:"100vh",width:"100vw",margin:"0 ",textAlign:"center"
+        }}>
+         
             <h1>Welcome to our Application</h1>
-            <nav style={{display:"flex",gap:"15px",marginBottom:"20px"}}>
+            <nav style={{display:"flex",justifyContent: "center",alignItems:"center", gap:"15px",marginBottom:"20px"}}>
             <button onClick={()=> onNavigate("home")}>Home</button>
             <button onClick={()=> onNavigate("about")}>About</button>
             <button onClick={()=> onNavigate("contact")}>Contact</button>
