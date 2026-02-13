@@ -3,7 +3,7 @@ import { useState } from "react";
 function landing({onNavigate}){
     return(
         <div style={{
-            padding:"50px",height:"100vh",width:"100vw",margin:"0 ",textAlign:"center"
+            padding:"50px",height:"100vh",width:"100vw",margin:"0",textAlign:"center", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"
         }}>
          
             <h1>Welcome to our Application</h1>

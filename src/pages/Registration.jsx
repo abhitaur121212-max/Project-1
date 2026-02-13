@@ -5,48 +5,55 @@ function Registration({onRegisterSuccesful}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-
-
-    if (!name || !email || !password){
-      setMessage("All fields are required")
+    if (!name || !email || !password) {
+      setMessage("All fields are required");
+      return;
     }
-      
-    
 
-    //Storing data locally here
-    const userData = {
-      name, 
-      email, 
-      password, 
-    };
+    try {
+      setLoading(true);
+      setMessage("");
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(data.message || "Registration failed");
+        setLoading(false);
+        return;
+      }
 
-    localStorage.setItem("userData",JSON.stringify(userData));
-
-
-    // for now just showing success
-    setMessage("Registration successful ✅");
-
+      setMessage( "Registration Successful!");
+  
     // clear form
     setName("");
     setEmail("");
     setPassword("");
-  
-
-  setTimeout(() => {
-  onRegisterSuccesful();  
-  },2000);
-};
-
+    setLoading(false);
+    setTimeout(() => {
+     onRegisterSuccesful();  
+     },2000);
+  } catch (err) {
+    console.error(err);
+    setMessage("Server error");
+    setLoading(false);
+  }
+  };
 
 
 
 
   return (
-    <div style={{ width: "300px", margin: "50px auto" }}>
+    <div style={{ width: "600px", margin: "50px auto", padding: "30px", border: "1px solid #ccc", borderRadius: "8px" }}>
       <h2>Register</h2>
 
       {message && <p>{message}</p>}
@@ -58,6 +65,7 @@ function Registration({onRegisterSuccesful}) {
             placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            style={{ width: "100%", padding: "10px", marginBottom: "10px", boxSizing: "border-box" }}
           />
         </div>
 
@@ -67,6 +75,7 @@ function Registration({onRegisterSuccesful}) {
             placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{ width: "100%", padding: "10px", marginBottom: "10px", boxSizing: "border-box" }}
           />
         </div>
 
@@ -76,10 +85,12 @@ function Registration({onRegisterSuccesful}) {
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{ width: "100%", padding: "10px", marginBottom: "10px", boxSizing: "border-box" }}
           />
         </div>
 
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading} style={{ width: "100%" }}>
+          {loading ? "Registering..." : "Register"}</button>
       </form>
     </div>
   );
